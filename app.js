@@ -120,6 +120,8 @@ function getRandomSafeSpot() {
   let playerElements = {};  // player list to all our DOM elements
 
   const gameContainer = document.querySelector(".game-container");
+  const playerNameInput = document.querySelector("#player-name");
+  const playerColorButton = document.querySelector("#player-color");
 
   function handleArrowPress(xChange=0, yChange=0) {
     const newX = players[playerId].x + xChange;
@@ -204,6 +206,24 @@ function getRandomSafeSpot() {
       delete playerElements[removedKey];
     })
 
+    //Updates player name with text input 
+    playerNameInput.addEventListener("change", (e) => {
+      const newName = e.target.value || createName();
+      playerNameInput.value = newName;
+      playerRef.update({
+        name: newName
+      })
+    })
+
+    //Update player color on button click
+    playerColorButton.addEventListener("click", () => {
+      const mySkinIndex = playerColors.indexOf(players[playerId].color);
+      const nextColor = playerColors[mySkinIndex + 1] || playerColors[0];
+      playerRef.update({
+        color: nextColor
+      })
+    })
+
   }
 
   firebase.auth().onAuthStateChanged((user) => {
@@ -214,6 +234,8 @@ function getRandomSafeSpot() {
       playerRef = firebase.database().ref(`players/${playerId}`);
 
       const name = createName();
+      playerNameInput.value = name;
+
       const {x, y} = getRandomSafeSpot();
 
       playerRef.set({
