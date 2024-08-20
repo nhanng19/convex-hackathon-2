@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
       };
 
       // Construct the redirect URL with query parameters
-      const redirectUrl = new URL('/', req.url);
+      const redirectUrl = new URL('/home', req.url);
       redirectUrl.searchParams.append('accessToken', accessToken);
       redirectUrl.searchParams.append('firstName', userProfile.firstName);
       redirectUrl.searchParams.append('lastName', userProfile.lastName);
